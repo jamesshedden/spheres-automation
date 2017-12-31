@@ -12,6 +12,12 @@ const Bot = new Twit({
 
 const driver = new webdriver.Builder().forBrowser('chrome').build();
 
+const options = new webdriver.Options();
+
+if (process.env.GOOGLE_CHROME_BIN) {
+  options.setChromeBinaryPath(process.env.GOOGLE_CHROME_BIN);
+}
+
 const getRandomNumber = (min, max) => Math.floor(Math.random() * max) + min;
 
 const getRandomCoordinates = () => {

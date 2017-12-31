@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+./node_modules/.bin/babel ./index.js -d ./lib
+node ./lib/index.js

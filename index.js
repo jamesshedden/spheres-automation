@@ -1,4 +1,5 @@
 import webdriver from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome';
 import shortid from 'shortid';
 const fs = require('fs');
 import Twit from 'twit';
@@ -10,13 +11,15 @@ const Bot = new Twit({
  access_token_secret: process.env.BOT_ACCESS_TOKEN_SECRET,
 });
 
-const driver = new webdriver.Builder().forBrowser('chrome').build();
-
-const options = new webdriver.Options();
+const builder = new webdriver.Builder().forBrowser('chrome');
 
 if (process.env.GOOGLE_CHROME_BIN) {
-  options.setChromeBinaryPath(process.env.GOOGLE_CHROME_BIN);
+  builder.setChromeOptions(
+    new chrome.Options().setChromeBinaryPath(process.env.GOOGLE_CHROME_BIN)
+  );
 }
+
+let driver = builder.build();
 
 const getRandomNumber = (min, max) => Math.floor(Math.random() * max) + min;
 
@@ -38,6 +41,7 @@ driver.manage().window().setSize(600, 715);
 // ask the browser to open a page
 driver.navigate()
   .to('http://spheres.cool/?is_automated=true').then(() => {
+
     driver
       .executeScript(`
         window.localStorage.setItem('spheres.isUserFullyOnboarded', 'true');

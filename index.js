@@ -94,25 +94,25 @@ driver.navigate()
                       .executeScript(`
                         document.querySelector('.icons').remove();
                       `).then(() => {
-                        return driver.takeScreenshot().then((data) => {
-                          // writeScreenshot(data, `${ shortid.generate() }.png`);
-
-                          Bot.post('media/upload', { media_data: data }, (err, data, res) => {
-                            Bot.post('media/metadata/create', {
-                              media_id: data.media_id_string,
-                              alt_text: { text: 'A colourful composition of spheres' },
-                            }, (err) => {
-                              if (!err) {
-                                Bot.post('statuses/update', {
-                                  status: '',
-                                  media_ids: [data.media_id_string]
+                          return driver.sleep(5000).then(() => {
+                            return driver.takeScreenshot().then((data) => {
+                              Bot.post('media/upload', { media_data: data }, (err, data, res) => {
+                                Bot.post('media/metadata/create', {
+                                  media_id: data.media_id_string,
+                                  alt_text: { text: 'A colourful composition of spheres' },
+                                }, (err) => {
+                                  if (!err) {
+                                    Bot.post('statuses/update', {
+                                      status: '',
+                                      media_ids: [data.media_id_string]
+                                    });
+                                  }
                                 });
-                              }
-                            });
-                          });
+                              });
 
-                          return driver.quit();
-                        })
+                              return driver.quit();
+                          });
+                        });
                       });
                   });
               });
